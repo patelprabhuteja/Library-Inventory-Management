@@ -23,6 +23,24 @@
                     <li>
                         <a href="/addBook" class="btn btn-primary">Add Book</a>
                     </li>
+                    <li>
+                        <a href="/" id="print" class="btn w-75 py-2 btn-primary">
+                            <i class="fas fa-print"></i>
+                            Print/Download PDF
+                        </a>
+                    </li>
+                    <li>
+                        <a id="print" class="btn btn-block py-2 mx-2 btn-primary" href="BookDetails.xlsx" download>
+                            <i class="fas fa-downlaod"></i>
+                            Download Excel
+                        </a>
+                    </li>
+                    <li>
+                        <a id="print" class="btn btn-block py-2 mx-2 btn-primary" href="BookDetails.json" download>
+                            <i class="fas fa-downlaod"></i>
+                            Download JSON
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -111,17 +129,7 @@
         let collapseBtn=document.getElementById("collapse");
         let download=document.getElementById("download");
         let sideBar=document.getElementById("sideBar");
-        let printBtn=document.getElementById("print");
         let bookDetails=document.getElementById("bookDetails");
-        printBtn.onclick=async ()=>{
-            var newWindow=await window.open("","BookDetails","");
-            await newWindow.document.write('<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">');
-            await newWindow.document.write(bookDetails.innerHTML);
-            await newWindow.focus();
-            await newWindow.stop();
-            await newWindow.print();
-            await newWindow.close();
-        };
         collapseBtn.onclick=()=>{
             sideBar.classList.toggle("active");
         };
