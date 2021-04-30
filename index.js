@@ -42,14 +42,24 @@ app.get("/",(req,res)=>{
 });
 app.get("/edit",(req,res)=>{
     let bId=req.query["id"];
-    async function getDetails(){
-        let result=await db.collection("inventory").findOne({"bookId": bId});
-        await res.render("edit.ejs",{
-            "data": result,
-            "error": ""
-        })
+    if(bId.trim()==""){
+        res.redirect("/");
+        return;
     }
-    getDetails();
+    else{
+        async function getDetails(){
+            let result=await db.collection("inventory").findOne({"bookId": bId});
+            if(result==null){
+                await res.redirect("/");
+                return;
+            }
+            await res.render("edit.ejs",{
+                "data": result,
+                "error": ""
+            })
+        }
+        getDetails();
+    }
 });
 app.post("/edit",(req,res)=>{
     async function updateBook(){
@@ -91,8 +101,16 @@ app.post("/addBook",(req,res)=>{
                 return;
             }
         }
-        await db.collection("inventory").insertOne(req.body);
-        await res.redirect("/");
+        let result=await db.collection("inventory").findOne({"bookId":req.body["bookId"]});
+        if(result==null){
+            await db.collection("inventory").insertOne(req.body);
+            await res.redirect("/");
+        }
+        else{
+            await res.render("addbook.ejs",{
+                "error": "Book ID given already exists."
+            })
+        }
     }
     addBook();
 });
